@@ -1,0 +1,51 @@
+# Build outputs
+**/bin/
+**/obj/
+**/publish/
+**/Debug/
+**/Release/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Inno Setup
+dist/
+*.exe
+*.msi
+
+# .NET
+*.dll
+*.pdb
+*.exe
+*.cache
+*.log
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# IDE
+.vscode/
+.idea/
+
+# Package managers
+packages/
+node_modules/

@@ -10,10 +10,32 @@ public partial class MainForm : Form
 
     public MainForm()
     {
+        // Set DPI awareness for this form
+        this.AutoScaleMode = AutoScaleMode.Dpi;
+        this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+        
         InitializeComponent();
+        SetIcon();
         LoadConfig();
         LoadBrowsers();
         SetupDataBinding();
+    }
+
+    private void SetIcon()
+    {
+        try
+        {
+            // Try to load the icon from the executable's resources
+            var iconPath = Path.Combine(Application.StartupPath, "icon.ico");
+            if (File.Exists(iconPath))
+            {
+                this.Icon = new Icon(iconPath);
+            }
+        }
+        catch
+        {
+            // If icon loading fails, continue without setting an icon
+        }
     }
 
     private void LoadConfig()
@@ -104,11 +126,19 @@ public partial class MainForm : Form
 
     private void btnAddRule_Click(object sender, EventArgs e)
     {
-        using var dialog = new RuleEditorDialog(_browsers);
-        if (dialog.ShowDialog() == DialogResult.OK)
+        try
         {
-            _config.Rules.Add(dialog.Rule);
-            RefreshRulesList();
+            using var dialog = new RuleEditorDialog(_browsers);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _config.Rules.Add(dialog.Rule);
+                RefreshRulesList();
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error adding rule: {ex.Message}", "Error", 
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

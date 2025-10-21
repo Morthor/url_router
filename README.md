@@ -13,8 +13,9 @@ A Windows application that routes HTTP/HTTPS URLs to different applications base
 ### Easy Installation (Recommended)
 
 1. **Download and run the installer**:
-   - Right-click `install\install.ps1` → "Run with PowerShell" → "Run as Administrator"
-   - The installer will automatically build and install everything
+   - Download `UrlRouter-Setup-1.0.exe` from the releases
+   - Run the installer as Administrator
+   - Follow the installation wizard
 
 2. **Set as default browser**:
    - Go to Settings → Apps → Default apps → Choose defaults by link type
@@ -24,22 +25,17 @@ A Windows application that routes HTTP/HTTPS URLs to different applications base
    - Run "URL Router" from the Start Menu
    - Create routing rules (e.g., "youtube.com → Chrome", "teams.microsoft.com → Edge")
 
-### Manual Installation (For Developers)
+### Building from Source
 
-1. **Build the router**:
+1. **Build the application**:
    ```powershell
-   dotnet publish router -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+   .\build.ps1
    ```
 
-2. **Build the UI**:
+2. **Create installer** (requires Inno Setup):
    ```powershell
-   dotnet publish ui-csharp -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+   .\build-installer.ps1
    ```
-
-3. **Register as default handler**:
-   - Right-click `install\urlrouter.reg` → "Run as administrator"
-   - Go to Settings → Apps → Default apps → Choose defaults by link type
-   - Select "URL Router" for HTTP and HTTPS links
 
 ## Usage
 
@@ -55,8 +51,9 @@ A Windows application that routes HTTP/HTTPS URLs to different applications base
 ## Uninstallation
 
 To uninstall URL Router:
-1. Run the uninstaller: `%ProgramFiles%\UrlRouter\uninstall.ps1` as Administrator
-2. Or manually remove from Settings → Apps → Default apps
+1. Go to Settings → Apps → Installed apps
+2. Find "URL Router" and click "Uninstall"
+3. Or use the uninstaller from the Start Menu
 
 ## Project Structure
 

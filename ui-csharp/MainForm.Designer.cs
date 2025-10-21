@@ -125,9 +125,9 @@ partial class MainForm
         // btnAddRule
         // 
         this.btnAddRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnAddRule.Location = new Point(6, 512);
+        this.btnAddRule.Location = new Point(6, 500);
         this.btnAddRule.Name = "btnAddRule";
-        this.btnAddRule.Size = new Size(75, 23);
+        this.btnAddRule.Size = new Size(100, 35);
         this.btnAddRule.TabIndex = 1;
         this.btnAddRule.Text = "Add Rule";
         this.btnAddRule.UseVisualStyleBackColor = true;
@@ -137,9 +137,9 @@ partial class MainForm
         // btnEditRule
         // 
         this.btnEditRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnEditRule.Location = new Point(87, 512);
+        this.btnEditRule.Location = new Point(112, 500);
         this.btnEditRule.Name = "btnEditRule";
-        this.btnEditRule.Size = new Size(75, 23);
+        this.btnEditRule.Size = new Size(100, 35);
         this.btnEditRule.TabIndex = 2;
         this.btnEditRule.Text = "Edit Rule";
         this.btnEditRule.UseVisualStyleBackColor = true;
@@ -149,9 +149,9 @@ partial class MainForm
         // btnDeleteRule
         // 
         this.btnDeleteRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnDeleteRule.Location = new Point(168, 512);
+        this.btnDeleteRule.Location = new Point(218, 500);
         this.btnDeleteRule.Name = "btnDeleteRule";
-        this.btnDeleteRule.Size = new Size(75, 23);
+        this.btnDeleteRule.Size = new Size(100, 35);
         this.btnDeleteRule.TabIndex = 3;
         this.btnDeleteRule.Text = "Delete Rule";
         this.btnDeleteRule.UseVisualStyleBackColor = true;
@@ -161,9 +161,9 @@ partial class MainForm
         // btnMoveUp
         // 
         this.btnMoveUp.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        this.btnMoveUp.Location = new Point(630, 512);
+        this.btnMoveUp.Location = new Point(580, 500);
         this.btnMoveUp.Name = "btnMoveUp";
-        this.btnMoveUp.Size = new Size(75, 23);
+        this.btnMoveUp.Size = new Size(100, 35);
         this.btnMoveUp.TabIndex = 4;
         this.btnMoveUp.Text = "Move Up";
         this.btnMoveUp.UseVisualStyleBackColor = true;
@@ -173,9 +173,9 @@ partial class MainForm
         // btnMoveDown
         // 
         this.btnMoveDown.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        this.btnMoveDown.Location = new Point(696, 512);
+        this.btnMoveDown.Location = new Point(686, 500);
         this.btnMoveDown.Name = "btnMoveDown";
-        this.btnMoveDown.Size = new Size(90, 23);
+        this.btnMoveDown.Size = new Size(100, 35);
         this.btnMoveDown.TabIndex = 5;
         this.btnMoveDown.Text = "Move Down";
         this.btnMoveDown.UseVisualStyleBackColor = true;
@@ -263,9 +263,9 @@ partial class MainForm
         // btnSave
         // 
         this.btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        this.btnSave.Location = new Point(711, 200);
+        this.btnSave.Location = new Point(690, 200);
         this.btnSave.Name = "btnSave";
-        this.btnSave.Size = new Size(75, 23);
+        this.btnSave.Size = new Size(100, 35);
         this.btnSave.TabIndex = 6;
         this.btnSave.Text = "Save";
         this.btnSave.UseVisualStyleBackColor = true;
@@ -310,7 +310,7 @@ partial class MainForm
         // 
         this.btnTestUrl.Location = new Point(6, 80);
         this.btnTestUrl.Name = "btnTestUrl";
-        this.btnTestUrl.Size = new Size(75, 23);
+        this.btnTestUrl.Size = new Size(100, 35);
         this.btnTestUrl.TabIndex = 2;
         this.btnTestUrl.Text = "Test URL";
         this.btnTestUrl.UseVisualStyleBackColor = true;
