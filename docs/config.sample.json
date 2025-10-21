@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "default": {
+    "type": "app",
+    "target": "C:/Program Files/Mozilla Firefox/firefox.exe",
+    "args": []
+  },
+  "rules": [
+    {
+      "name": "Teams → Edge",
+      "when": { "host": ["teams.microsoft.com", "*.microsoft.com"], "pathContains": [], "urlRegex": null },
+      "action": { "type": "app", "target": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "args": [] }
+    }
+  ]
+}
+
+
