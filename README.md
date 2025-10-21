@@ -14,7 +14,7 @@ A Windows application that routes HTTP/HTTPS URLs to different applications base
 
 1. **Download and run the installer**:
    - Download `UrlRouter-Setup-1.0.exe` from [releases](https://github.com/Morthor/url_router/releases/tag/1.0)
-   - Run the installer as Administrator
+   - Run the installer (no admin privileges required)
    - Follow the installation wizard
 
 2. **Set as default browser**:
