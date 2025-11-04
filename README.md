@@ -13,7 +13,7 @@ A Windows application that routes HTTP/HTTPS URLs to different applications base
 ### Easy Installation (Recommended)
 
 1. **Download and run the installer**:
-   - Download `UrlRouter-Setup-1.0.exe` from [releases](https://github.com/Morthor/url_router/releases/tag/1.0)
+   - Download `UrlRouter-Setup-1.2.exe` from [releases](https://github.com/Morthor/url_router/releases/tag/1.2)
    - Run the installer (no admin privileges required)
    - Follow the installation wizard
 

@@ -15,6 +15,9 @@ partial class MainForm
 
     private void InitializeComponent()
     {
+        this.pnlDefaultBrowserStatus = new Panel();
+        this.lblDefaultBrowserStatus = new Label();
+        this.btnSetAsDefault = new Button();
         this.tabControl = new TabControl();
         this.tabRules = new TabPage();
         this.tabDefault = new TabPage();
@@ -47,11 +50,47 @@ partial class MainForm
         this.txtTestUrl = new TextBox();
         this.btnTestUrl = new Button();
         
+        this.pnlDefaultBrowserStatus.SuspendLayout();
         this.tabControl.SuspendLayout();
         this.tabRules.SuspendLayout();
         this.tabDefault.SuspendLayout();
         this.tabTest.SuspendLayout();
         this.SuspendLayout();
+        
+        // 
+        // pnlDefaultBrowserStatus
+        // 
+        this.pnlDefaultBrowserStatus.Controls.Add(this.lblDefaultBrowserStatus);
+        this.pnlDefaultBrowserStatus.Controls.Add(this.btnSetAsDefault);
+        this.pnlDefaultBrowserStatus.Dock = DockStyle.Top;
+        this.pnlDefaultBrowserStatus.Location = new Point(0, 0);
+        this.pnlDefaultBrowserStatus.Name = "pnlDefaultBrowserStatus";
+        this.pnlDefaultBrowserStatus.Size = new Size(800, 50);
+        this.pnlDefaultBrowserStatus.TabIndex = 0;
+        this.pnlDefaultBrowserStatus.BackColor = Color.WhiteSmoke;
+        this.pnlDefaultBrowserStatus.BorderStyle = BorderStyle.FixedSingle;
+        
+        // 
+        // lblDefaultBrowserStatus
+        // 
+        this.lblDefaultBrowserStatus.AutoSize = true;
+        this.lblDefaultBrowserStatus.Location = new Point(12, 17);
+        this.lblDefaultBrowserStatus.Name = "lblDefaultBrowserStatus";
+        this.lblDefaultBrowserStatus.Size = new Size(200, 15);
+        this.lblDefaultBrowserStatus.TabIndex = 0;
+        this.lblDefaultBrowserStatus.Text = "Checking default browser status...";
+        
+        // 
+        // btnSetAsDefault
+        // 
+        this.btnSetAsDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        this.btnSetAsDefault.Location = new Point(690, 12);
+        this.btnSetAsDefault.Name = "btnSetAsDefault";
+        this.btnSetAsDefault.Size = new Size(100, 26);
+        this.btnSetAsDefault.TabIndex = 1;
+        this.btnSetAsDefault.Text = "Set as Default";
+        this.btnSetAsDefault.UseVisualStyleBackColor = true;
+        this.btnSetAsDefault.Click += new EventHandler(this.btnSetAsDefault_Click);
         
         // 
         // tabControl
@@ -60,11 +99,11 @@ partial class MainForm
         this.tabControl.Controls.Add(this.tabDefault);
         this.tabControl.Controls.Add(this.tabTest);
         this.tabControl.Dock = DockStyle.Fill;
-        this.tabControl.Location = new Point(0, 0);
+        this.tabControl.Location = new Point(0, 50);
         this.tabControl.Name = "tabControl";
         this.tabControl.SelectedIndex = 0;
-        this.tabControl.Size = new Size(800, 600);
-        this.tabControl.TabIndex = 0;
+        this.tabControl.Size = new Size(800, 550);
+        this.tabControl.TabIndex = 1;
         
         // 
         // tabRules
@@ -337,11 +376,14 @@ partial class MainForm
         this.AutoScaleMode = AutoScaleMode.Font;
         this.ClientSize = new Size(800, 600);
         this.Controls.Add(this.tabControl);
-        this.MinimumSize = new Size(600, 400);
+        this.Controls.Add(this.pnlDefaultBrowserStatus);
+        this.MinimumSize = new Size(600, 450);
         this.Name = "MainForm";
         this.StartPosition = FormStartPosition.CenterScreen;
         this.Text = "URL Router Configuration";
         
+        this.pnlDefaultBrowserStatus.ResumeLayout(false);
+        this.pnlDefaultBrowserStatus.PerformLayout();
         this.tabControl.ResumeLayout(false);
         this.tabRules.ResumeLayout(false);
         this.tabDefault.ResumeLayout(false);
@@ -351,6 +393,9 @@ partial class MainForm
         this.ResumeLayout(false);
     }
 
+    private Panel pnlDefaultBrowserStatus;
+    private Label lblDefaultBrowserStatus;
+    private Button btnSetAsDefault;
     private TabControl tabControl;
     private TabPage tabRules;
     private TabPage tabDefault;

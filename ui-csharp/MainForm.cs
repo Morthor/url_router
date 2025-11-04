@@ -20,7 +20,9 @@ public partial class MainForm : Form
         LoadConfig();
         LoadBrowsers();
         SetupDataBinding();
+        CheckDefaultBrowserStatus();
         this.FormClosing += MainForm_FormClosing;
+        this.Activated += MainForm_Activated; // Refresh status when form becomes active
     }
 
     private void SetIcon()
@@ -87,7 +89,27 @@ public partial class MainForm : Form
         {
             var item = new ListViewItem(rule.Name);
             item.SubItems.Add(string.Join(", ", rule.When.Host));
-            item.SubItems.Add(rule.Action.Browser ?? "Default");
+            
+            // Try to get browser name from Browser property, or match by target path
+            string browserDisplay = "Default";
+            if (!string.IsNullOrEmpty(rule.Action.Browser))
+            {
+                browserDisplay = rule.Action.Browser;
+            }
+            else if (!string.IsNullOrEmpty(rule.Action.Target))
+            {
+                var targetPath = rule.Action.Target.ToLowerInvariant();
+                var browser = _browsers.FirstOrDefault(b => 
+                    b.ExePath.ToLowerInvariant() == targetPath);
+                if (browser != null)
+                {
+                    browserDisplay = browser.Name;
+                    // Update the Browser property for future saves
+                    rule.Action.Browser = browser.Name;
+                }
+            }
+            
+            item.SubItems.Add(browserDisplay);
             item.SubItems.Add(rule.Action.Target);
             item.Tag = rule;
             
@@ -364,6 +386,50 @@ public partial class MainForm : Form
             {
                 e.Cancel = true;
             }
+        }
+    }
+
+    private void CheckDefaultBrowserStatus()
+    {
+        var isDefault = DefaultBrowserHelper.IsUrlRouterSetAsDefault();
+        if (isDefault)
+        {
+            lblDefaultBrowserStatus.Text = "✓ URL Router is set as your default browser for HTTP/HTTPS links";
+            lblDefaultBrowserStatus.ForeColor = Color.Green;
+            btnSetAsDefault.Visible = false;
+        }
+        else
+        {
+            lblDefaultBrowserStatus.Text = "⚠ URL Router is NOT set as your default browser. Click the button below to set it up.";
+            lblDefaultBrowserStatus.ForeColor = Color.Orange;
+            btnSetAsDefault.Visible = true;
+        }
+    }
+
+    private void MainForm_Activated(object? sender, EventArgs e)
+    {
+        // Refresh status when form becomes active (user might have changed settings)
+        CheckDefaultBrowserStatus();
+    }
+
+    private void btnSetAsDefault_Click(object sender, EventArgs e)
+    {
+        var result = MessageBox.Show(
+            "This will open Windows Settings where you can set URL Router as the default browser for HTTP and HTTPS links.\n\n" +
+            "In the settings:\n" +
+            "1. Find 'HTTP' and click on it\n" +
+            "2. Select 'URL Router'\n" +
+            "3. Find 'HTTPS' and click on it\n" +
+            "4. Select 'URL Router'\n\n" +
+            "Open Settings now?",
+            "Set as Default Browser",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Information);
+
+        if (result == DialogResult.Yes)
+        {
+            DefaultBrowserHelper.OpenDefaultAppsSettings();
+            // Status will be refreshed when form becomes active again
         }
     }
 }

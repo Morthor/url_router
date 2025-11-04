@@ -27,6 +27,28 @@ public partial class RuleEditorDialog : Form
         // Populate browser dropdown
         cmbBrowsers.Items.Clear();
         cmbBrowsers.Items.AddRange(_browsers.ToArray());
+        
+        // Restore browser selection if Browser property is set
+        if (!string.IsNullOrEmpty(Rule.Action.Browser))
+        {
+            var browser = _browsers.FirstOrDefault(b => b.Name == Rule.Action.Browser);
+            if (browser != null)
+            {
+                cmbBrowsers.SelectedItem = browser;
+            }
+        }
+        // If Browser not set but Target matches a known browser, select it
+        else if (!string.IsNullOrEmpty(Rule.Action.Target))
+        {
+            var targetPath = Rule.Action.Target.ToLowerInvariant();
+            var browser = _browsers.FirstOrDefault(b => 
+                b.ExePath.ToLowerInvariant() == targetPath);
+            if (browser != null)
+            {
+                cmbBrowsers.SelectedItem = browser;
+                Rule.Action.Browser = browser.Name; // Set it for future saves
+            }
+        }
     }
 
     private void SaveRule()
@@ -74,6 +96,7 @@ public partial class RuleEditorDialog : Form
         if (cmbBrowsers.SelectedItem is BrowserApp browser)
         {
             txtTarget.Text = browser.ExePath;
+            Rule.Action.Browser = browser.Name; // Set Browser property for display
         }
     }
 }

@@ -2,7 +2,7 @@
 ; This script creates a Windows installer for the URL Router application
 
 #define MyAppName "URL Router"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.2"
 #define MyAppPublisher "João Soares"
 #define MyAppURL "https://github.com/yourusername/urlrouter"
 #define MyAppExeName "UrlRouterUI.exe"
