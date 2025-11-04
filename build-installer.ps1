@@ -36,7 +36,7 @@ Write-Host "Creating installer..." -ForegroundColor Yellow
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
     Write-Host "Installer created successfully!" -ForegroundColor Green
-    Write-Host "Location: dist\UrlRouter-Setup-1.0.exe" -ForegroundColor Cyan
+    Write-Host "Location: dist\UrlRouter-Setup-1.1.exe" -ForegroundColor Cyan
 } else {
     Write-Host "Failed to create installer" -ForegroundColor Red
     exit 1

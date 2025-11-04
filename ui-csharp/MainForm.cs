@@ -7,6 +7,7 @@ public partial class MainForm : Form
     private readonly ConfigService _configService = new();
     private UrlRouterConfig _config;
     private List<BrowserApp> _browsers = new();
+    private bool _hasUnsavedChanges = false;
 
     public MainForm()
     {
@@ -19,6 +20,7 @@ public partial class MainForm : Form
         LoadConfig();
         LoadBrowsers();
         SetupDataBinding();
+        this.FormClosing += MainForm_FormClosing;
     }
 
     private void SetIcon()
@@ -105,6 +107,8 @@ public partial class MainForm : Form
         try
         {
             _configService.Save(_config);
+            _hasUnsavedChanges = false;
+            UpdateWindowTitle();
             MessageBox.Show("Configuration saved successfully!", "Success", 
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -115,12 +119,29 @@ public partial class MainForm : Form
         }
     }
 
+    private void MarkAsChanged()
+    {
+        _hasUnsavedChanges = true;
+        UpdateWindowTitle();
+    }
+
+    private void UpdateWindowTitle()
+    {
+        var baseTitle = "URL Router Configuration";
+        this.Text = _hasUnsavedChanges ? $"{baseTitle} *" : baseTitle;
+    }
+
     private void btnSave_Click(object sender, EventArgs e)
     {
         // Update default action
         _config.Default.Target = txtDefaultTarget.Text.Trim();
         _config.Default.Args = txtDefaultArgs.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         
+        SaveConfig();
+    }
+
+    private void btnSaveRules_Click(object sender, EventArgs e)
+    {
         SaveConfig();
     }
 
@@ -133,6 +154,7 @@ public partial class MainForm : Form
             {
                 _config.Rules.Add(dialog.Rule);
                 RefreshRulesList();
+                MarkAsChanged();
             }
         }
         catch (Exception ex)
@@ -155,6 +177,7 @@ public partial class MainForm : Form
             {
                 _config.Rules[index] = dialog.Rule;
                 RefreshRulesList();
+                MarkAsChanged();
             }
         }
     }
@@ -171,6 +194,7 @@ public partial class MainForm : Form
         {
             _config.Rules.Remove(rule);
             RefreshRulesList();
+            MarkAsChanged();
         }
     }
 
@@ -186,6 +210,7 @@ public partial class MainForm : Form
             _config.Rules.Insert(selectedIndex - 1, rule);
             RefreshRulesList();
             lstRules.Items[selectedIndex - 1].Selected = true;
+            MarkAsChanged();
         }
     }
 
@@ -201,6 +226,7 @@ public partial class MainForm : Form
             _config.Rules.Insert(selectedIndex + 1, rule);
             RefreshRulesList();
             lstRules.Items[selectedIndex + 1].Selected = true;
+            MarkAsChanged();
         }
     }
 
@@ -317,6 +343,27 @@ public partial class MainForm : Form
         if (cmbDefaultBrowser.SelectedItem is BrowserApp browser)
         {
             txtDefaultTarget.Text = browser.ExePath;
+        }
+    }
+
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (_hasUnsavedChanges)
+        {
+            var result = MessageBox.Show(
+                "You have unsaved changes. Do you want to save before closing?",
+                "Unsaved Changes",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SaveConfig();
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

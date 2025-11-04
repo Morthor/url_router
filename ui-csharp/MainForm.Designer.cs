@@ -31,6 +31,7 @@ partial class MainForm
         this.btnDeleteRule = new Button();
         this.btnMoveUp = new Button();
         this.btnMoveDown = new Button();
+        this.btnSaveRules = new Button();
         
         // Default tab
         this.lblDefaultTarget = new Label();
@@ -74,6 +75,7 @@ partial class MainForm
         this.tabRules.Controls.Add(this.btnDeleteRule);
         this.tabRules.Controls.Add(this.btnMoveUp);
         this.tabRules.Controls.Add(this.btnMoveDown);
+        this.tabRules.Controls.Add(this.btnSaveRules);
         this.tabRules.Location = new Point(4, 24);
         this.tabRules.Name = "tabRules";
         this.tabRules.Padding = new Padding(3);
@@ -92,7 +94,7 @@ partial class MainForm
         this.lstRules.Location = new Point(6, 6);
         this.lstRules.MultiSelect = false;
         this.lstRules.Name = "lstRules";
-        this.lstRules.Size = new Size(780, 500);
+        this.lstRules.Size = new Size(780, 460);
         this.lstRules.TabIndex = 0;
         this.lstRules.UseCompatibleStateImageBehavior = false;
         this.lstRules.View = View.Details;
@@ -125,11 +127,11 @@ partial class MainForm
         // btnAddRule
         // 
         this.btnAddRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnAddRule.Location = new Point(6, 500);
+        this.btnAddRule.Location = new Point(6, 480);
         this.btnAddRule.Name = "btnAddRule";
         this.btnAddRule.Size = new Size(100, 35);
         this.btnAddRule.TabIndex = 1;
-        this.btnAddRule.Text = "Add Rule";
+        this.btnAddRule.Text = "+ Add Rule";
         this.btnAddRule.UseVisualStyleBackColor = true;
         this.btnAddRule.Click += new EventHandler(this.btnAddRule_Click);
         
@@ -137,11 +139,11 @@ partial class MainForm
         // btnEditRule
         // 
         this.btnEditRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnEditRule.Location = new Point(112, 500);
+        this.btnEditRule.Location = new Point(112, 480);
         this.btnEditRule.Name = "btnEditRule";
         this.btnEditRule.Size = new Size(100, 35);
         this.btnEditRule.TabIndex = 2;
-        this.btnEditRule.Text = "Edit Rule";
+        this.btnEditRule.Text = "✏ Edit Rule";
         this.btnEditRule.UseVisualStyleBackColor = true;
         this.btnEditRule.Click += new EventHandler(this.btnEditRule_Click);
         
@@ -149,11 +151,11 @@ partial class MainForm
         // btnDeleteRule
         // 
         this.btnDeleteRule.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-        this.btnDeleteRule.Location = new Point(218, 500);
+        this.btnDeleteRule.Location = new Point(218, 480);
         this.btnDeleteRule.Name = "btnDeleteRule";
         this.btnDeleteRule.Size = new Size(100, 35);
         this.btnDeleteRule.TabIndex = 3;
-        this.btnDeleteRule.Text = "Delete Rule";
+        this.btnDeleteRule.Text = "× Delete Rule";
         this.btnDeleteRule.UseVisualStyleBackColor = true;
         this.btnDeleteRule.Click += new EventHandler(this.btnDeleteRule_Click);
         
@@ -161,11 +163,11 @@ partial class MainForm
         // btnMoveUp
         // 
         this.btnMoveUp.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        this.btnMoveUp.Location = new Point(580, 500);
+        this.btnMoveUp.Location = new Point(570, 480);
         this.btnMoveUp.Name = "btnMoveUp";
         this.btnMoveUp.Size = new Size(100, 35);
         this.btnMoveUp.TabIndex = 4;
-        this.btnMoveUp.Text = "Move Up";
+        this.btnMoveUp.Text = "↑ Move Up";
         this.btnMoveUp.UseVisualStyleBackColor = true;
         this.btnMoveUp.Click += new EventHandler(this.btnMoveUp_Click);
         
@@ -173,13 +175,25 @@ partial class MainForm
         // btnMoveDown
         // 
         this.btnMoveDown.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        this.btnMoveDown.Location = new Point(686, 500);
+        this.btnMoveDown.Location = new Point(680, 480);
         this.btnMoveDown.Name = "btnMoveDown";
         this.btnMoveDown.Size = new Size(100, 35);
         this.btnMoveDown.TabIndex = 5;
-        this.btnMoveDown.Text = "Move Down";
+        this.btnMoveDown.Text = "↓ Move Down";
         this.btnMoveDown.UseVisualStyleBackColor = true;
         this.btnMoveDown.Click += new EventHandler(this.btnMoveDown_Click);
+        
+        // 
+        // btnSaveRules
+        // 
+        this.btnSaveRules.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        this.btnSaveRules.Location = new Point(324, 480);
+        this.btnSaveRules.Name = "btnSaveRules";
+        this.btnSaveRules.Size = new Size(100, 35);
+        this.btnSaveRules.TabIndex = 6;
+        this.btnSaveRules.Text = "💾 Save Rules";
+        this.btnSaveRules.UseVisualStyleBackColor = true;
+        this.btnSaveRules.Click += new EventHandler(this.btnSaveRules_Click);
         
         // 
         // tabDefault
@@ -267,7 +281,7 @@ partial class MainForm
         this.btnSave.Name = "btnSave";
         this.btnSave.Size = new Size(100, 35);
         this.btnSave.TabIndex = 6;
-        this.btnSave.Text = "Save";
+        this.btnSave.Text = "💾 Save";
         this.btnSave.UseVisualStyleBackColor = true;
         this.btnSave.Click += new EventHandler(this.btnSave_Click);
         
@@ -312,7 +326,7 @@ partial class MainForm
         this.btnTestUrl.Name = "btnTestUrl";
         this.btnTestUrl.Size = new Size(100, 35);
         this.btnTestUrl.TabIndex = 2;
-        this.btnTestUrl.Text = "Test URL";
+        this.btnTestUrl.Text = "🧪 Test URL";
         this.btnTestUrl.UseVisualStyleBackColor = true;
         this.btnTestUrl.Click += new EventHandler(this.btnTestUrl_Click);
         
@@ -351,6 +365,7 @@ partial class MainForm
     private Button btnDeleteRule;
     private Button btnMoveUp;
     private Button btnMoveDown;
+    private Button btnSaveRules;
     private Label lblDefaultTarget;
     private TextBox txtDefaultTarget;
     private Label lblDefaultArgs;
