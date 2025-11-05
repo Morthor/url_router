@@ -30,6 +30,12 @@ partial class RuleEditorDialog
         this.lblBrowsers = new Label();
         this.cmbBrowsers = new ComboBox();
         this.chkEnabled = new CheckBox();
+        this.chkRemoveTracking = new CheckBox();
+        this.radUseGlobalList = new RadioButton();
+        this.radUseCustomList = new RadioButton();
+        this.btnViewGlobalList = new Button();
+        this.lblTrackingParams = new Label();
+        this.txtTrackingParams = new TextBox();
         this.btnOK = new Button();
         this.btnCancel = new Button();
         this.SuspendLayout();
@@ -181,13 +187,83 @@ partial class RuleEditorDialog
         this.chkEnabled.UseVisualStyleBackColor = true;
         
         // 
+        // chkRemoveTracking
+        // 
+        this.chkRemoveTracking.AutoSize = true;
+        this.chkRemoveTracking.Location = new Point(12, 350);
+        this.chkRemoveTracking.Name = "chkRemoveTracking";
+        this.chkRemoveTracking.Size = new Size(200, 19);
+        this.chkRemoveTracking.TabIndex = 15;
+        this.chkRemoveTracking.Text = "Remove tracking parameters";
+        this.chkRemoveTracking.UseVisualStyleBackColor = true;
+        this.chkRemoveTracking.CheckedChanged += new EventHandler(this.chkRemoveTracking_CheckedChanged);
+        
+        // 
+        // radUseGlobalList
+        // 
+        this.radUseGlobalList.AutoSize = true;
+        this.radUseGlobalList.Checked = true;
+        this.radUseGlobalList.Location = new Point(30, 375);
+        this.radUseGlobalList.Name = "radUseGlobalList";
+        this.radUseGlobalList.Size = new Size(120, 19);
+        this.radUseGlobalList.TabIndex = 16;
+        this.radUseGlobalList.TabStop = true;
+        this.radUseGlobalList.Text = "Use global list";
+        this.radUseGlobalList.UseVisualStyleBackColor = true;
+        this.radUseGlobalList.CheckedChanged += new EventHandler(this.radTrackingList_CheckedChanged);
+        
+        // 
+        // btnViewGlobalList
+        // 
+        this.btnViewGlobalList.Location = new Point(160, 373);
+        this.btnViewGlobalList.Name = "btnViewGlobalList";
+        this.btnViewGlobalList.Size = new Size(120, 23);
+        this.btnViewGlobalList.TabIndex = 17;
+        this.btnViewGlobalList.Text = "View Global List";
+        this.btnViewGlobalList.UseVisualStyleBackColor = true;
+        this.btnViewGlobalList.Click += new EventHandler(this.btnViewGlobalList_Click);
+        
+        // 
+        // radUseCustomList
+        // 
+        this.radUseCustomList.AutoSize = true;
+        this.radUseCustomList.Location = new Point(30, 400);
+        this.radUseCustomList.Name = "radUseCustomList";
+        this.radUseCustomList.Size = new Size(125, 19);
+        this.radUseCustomList.TabIndex = 18;
+        this.radUseCustomList.Text = "Use custom list";
+        this.radUseCustomList.UseVisualStyleBackColor = true;
+        this.radUseCustomList.CheckedChanged += new EventHandler(this.radTrackingList_CheckedChanged);
+        
+        // 
+        // lblTrackingParams
+        // 
+        this.lblTrackingParams.AutoSize = true;
+        this.lblTrackingParams.Location = new Point(50, 425);
+        this.lblTrackingParams.Name = "lblTrackingParams";
+        this.lblTrackingParams.Size = new Size(200, 15);
+        this.lblTrackingParams.TabIndex = 19;
+        this.lblTrackingParams.Text = "Parameters (comma-separated):";
+        this.lblTrackingParams.Visible = false;
+        
+        // 
+        // txtTrackingParams
+        // 
+        this.txtTrackingParams.Location = new Point(50, 443);
+        this.txtTrackingParams.Name = "txtTrackingParams";
+        this.txtTrackingParams.PlaceholderText = "utm_source, utm_medium, gclid, fbclid";
+        this.txtTrackingParams.Size = new Size(522, 23);
+        this.txtTrackingParams.TabIndex = 20;
+        this.txtTrackingParams.Visible = false;
+        
+        // 
         // btnOK
         // 
         this.btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        this.btnOK.Location = new Point(416, 360);
+        this.btnOK.Location = new Point(416, 480);
         this.btnOK.Name = "btnOK";
         this.btnOK.Size = new Size(75, 23);
-        this.btnOK.TabIndex = 15;
+        this.btnOK.TabIndex = 21;
         this.btnOK.Text = "OK";
         this.btnOK.UseVisualStyleBackColor = true;
         this.btnOK.Click += new EventHandler(this.btnOK_Click);
@@ -197,10 +273,10 @@ partial class RuleEditorDialog
         // 
         this.btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         this.btnCancel.DialogResult = DialogResult.Cancel;
-        this.btnCancel.Location = new Point(497, 360);
+        this.btnCancel.Location = new Point(497, 480);
         this.btnCancel.Name = "btnCancel";
         this.btnCancel.Size = new Size(75, 23);
-        this.btnCancel.TabIndex = 16;
+        this.btnCancel.TabIndex = 22;
         this.btnCancel.Text = "Cancel";
         this.btnCancel.UseVisualStyleBackColor = true;
         this.btnCancel.Click += new EventHandler(this.btnCancel_Click);
@@ -212,7 +288,13 @@ partial class RuleEditorDialog
         this.AutoScaleDimensions = new SizeF(7F, 15F);
         this.AutoScaleMode = AutoScaleMode.Font;
         this.CancelButton = this.btnCancel;
-        this.ClientSize = new Size(584, 395);
+        this.ClientSize = new Size(584, 515);
+        this.Controls.Add(this.txtTrackingParams);
+        this.Controls.Add(this.lblTrackingParams);
+        this.Controls.Add(this.btnViewGlobalList);
+        this.Controls.Add(this.radUseCustomList);
+        this.Controls.Add(this.radUseGlobalList);
+        this.Controls.Add(this.chkRemoveTracking);
         this.Controls.Add(this.btnCancel);
         this.Controls.Add(this.btnOK);
         this.Controls.Add(this.chkEnabled);
@@ -255,6 +337,12 @@ partial class RuleEditorDialog
     private Label lblBrowsers;
     private ComboBox cmbBrowsers;
     private CheckBox chkEnabled;
+    private CheckBox chkRemoveTracking;
+    private RadioButton radUseGlobalList;
+    private Button btnViewGlobalList;
+    private RadioButton radUseCustomList;
+    private Label lblTrackingParams;
+    private TextBox txtTrackingParams;
     private Button btnOK;
     private Button btnCancel;
 }

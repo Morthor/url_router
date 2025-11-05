@@ -11,26 +11,90 @@ public static class DefaultBrowserHelper
         {
             using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Default);
             
-            // Check if HTTP protocol is set to UrlRouterHTTP
-            using var httpKey = baseKey.OpenSubKey(@"SOFTWARE\Classes\http");
-            if (httpKey == null) return false;
+            // Check HTTP protocol - verify the command points to our router
+            var httpIsSet = VerifyDirectRouterCommand(baseKey, "http");
+            if (!httpIsSet)
+            {
+                // Also check if it's set via our handler
+                var httpHandler = GetProtocolHandler(baseKey, "http");
+                if (httpHandler == "UrlRouterHTTP")
+                {
+                    httpIsSet = VerifyRouterCommand(baseKey, "UrlRouterHTTP");
+                }
+            }
             
-            var httpDefault = httpKey.GetValue("")?.ToString();
-            if (httpDefault != "UrlRouterHTTP") return false;
+            if (!httpIsSet) return false;
 
-            // Check if HTTPS protocol is set to UrlRouterHTTPS
-            using var httpsKey = baseKey.OpenSubKey(@"SOFTWARE\Classes\https");
-            if (httpsKey == null) return false;
+            // Check HTTPS protocol - verify the command points to our router
+            var httpsIsSet = VerifyDirectRouterCommand(baseKey, "https");
+            if (!httpsIsSet)
+            {
+                // Also check if it's set via our handler
+                var httpsHandler = GetProtocolHandler(baseKey, "https");
+                if (httpsHandler == "UrlRouterHTTPS")
+                {
+                    httpsIsSet = VerifyRouterCommand(baseKey, "UrlRouterHTTPS");
+                }
+            }
             
-            var httpsDefault = httpsKey.GetValue("")?.ToString();
-            if (httpsDefault != "UrlRouterHTTPS") return false;
-
-            // Both are set correctly
-            return true;
+            return httpsIsSet;
         }
         catch
         {
             // If we can't check, assume false
+            return false;
+        }
+    }
+
+    private static string? GetProtocolHandler(RegistryKey baseKey, string protocol)
+    {
+        try
+        {
+            using var protocolKey = baseKey.OpenSubKey($@"SOFTWARE\Classes\{protocol}");
+            if (protocolKey == null) return null;
+            
+            return protocolKey.GetValue("")?.ToString();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static bool VerifyRouterCommand(RegistryKey baseKey, string handlerName)
+    {
+        try
+        {
+            using var handlerKey = baseKey.OpenSubKey($@"SOFTWARE\Classes\{handlerName}\shell\open\command");
+            if (handlerKey == null) return false;
+            
+            var command = handlerKey.GetValue("")?.ToString();
+            if (string.IsNullOrEmpty(command)) return false;
+            
+            // Check if command contains UrlRouter.exe
+            return command.Contains("UrlRouter.exe", StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool VerifyDirectRouterCommand(RegistryKey baseKey, string protocol)
+    {
+        try
+        {
+            using var protocolKey = baseKey.OpenSubKey($@"SOFTWARE\Classes\{protocol}\shell\open\command");
+            if (protocolKey == null) return false;
+            
+            var command = protocolKey.GetValue("")?.ToString();
+            if (string.IsNullOrEmpty(command)) return false;
+            
+            // Check if command contains UrlRouter.exe
+            return command.Contains("UrlRouter.exe", StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
             return false;
         }
     }

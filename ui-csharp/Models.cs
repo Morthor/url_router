@@ -10,6 +10,8 @@ public class ActionCfg
     public string Target { get; set; } = "";
     public string? Browser { get; set; }
     public string[] Args { get; set; } = Array.Empty<string>();
+    public bool RemoveTrackingParams { get; set; } = false;
+    public string[]? TrackingParamsToRemove { get; set; }
 
     public static ActionCfg FromJson(JsonElement json)
     {
@@ -20,7 +22,11 @@ public class ActionCfg
             Browser = json.TryGetProperty("browser", out var browser) ? browser.GetString() : null,
             Args = json.TryGetProperty("args", out var args) && args.ValueKind == JsonValueKind.Array
                 ? args.EnumerateArray().Select(x => x.GetString() ?? "").Where(x => !string.IsNullOrEmpty(x)).ToArray()
-                : Array.Empty<string>()
+                : Array.Empty<string>(),
+            RemoveTrackingParams = json.TryGetProperty("removeTrackingParams", out var removeTracking) && removeTracking.GetBoolean(),
+            TrackingParamsToRemove = json.TryGetProperty("trackingParamsToRemove", out var trackingParams) && trackingParams.ValueKind == JsonValueKind.Array
+                ? trackingParams.EnumerateArray().Select(x => x.GetString() ?? "").Where(x => !string.IsNullOrEmpty(x)).ToArray()
+                : null
         };
     }
 
@@ -34,6 +40,10 @@ public class ActionCfg
         };
         if (!string.IsNullOrEmpty(Browser))
             obj["browser"] = Browser;
+        if (RemoveTrackingParams)
+            obj["removeTrackingParams"] = RemoveTrackingParams;
+        if (TrackingParamsToRemove != null && TrackingParamsToRemove.Length > 0)
+            obj["trackingParamsToRemove"] = new JsonArray(TrackingParamsToRemove.Select(x => JsonValue.Create(x)).ToArray());
         return obj;
     }
 }
@@ -106,6 +116,41 @@ public class UrlRouterConfig
     public int Version { get; set; } = 1;
     public ActionCfg Default { get; set; } = new();
     public List<RuleCfg> Rules { get; set; } = new();
+    public bool RemoveTrackingParamsGlobal { get; set; } = false;
+    public string[] TrackingParamsToRemoveGlobal { get; set; } = GetDefaultTrackingParams();
+
+    public static string[] GetDefaultTrackingParams()
+    {
+        return new[]
+        {
+            // UTM parameters
+            "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id", "utm_source_platform", "utm_creative_format", "utm_marketing_tactic",
+            // Google
+            "gclid", "dclid", "gbraid", "wbraid", "gclsrc", "_ga", "_gid", "_gac", "_gl",
+            // Facebook
+            "fbclid", "fb_action_ids", "fb_action_types", "fb_source", "fb_ref",
+            // Twitter/X
+            "twclid", "ref_src", "ref_url",
+            // Instagram
+            "igshid",
+            // LinkedIn
+            "li_fat_id", "trk", "trkInfo",
+            // Microsoft/Bing
+            "msclkid",
+            // Yahoo
+            "ysmwa", "yclid",
+            // HubSpot
+            "_hsenc", "_hssc", "_hssrc", "hsCtaTracking",
+            // Mailchimp
+            "mc_cid", "mc_eid",
+            // Pinterest
+            "epik",
+            // TikTok
+            "tt_medium", "tt_content",
+            // Other common tracking
+            "icid", "campaign_id", "ad_id", "clickid", "affiliate_id", "ncid", "ns_mchannel", "ns_source", "ns_linkname", "ns_fee"
+        };
+    }
 
     public static UrlRouterConfig FromJson(JsonElement json)
     {
@@ -115,18 +160,27 @@ public class UrlRouterConfig
             Default = json.TryGetProperty("default", out var def) ? ActionCfg.FromJson(def) : new ActionCfg(),
             Rules = json.TryGetProperty("rules", out var rules) && rules.ValueKind == JsonValueKind.Array
                 ? rules.EnumerateArray().Select(RuleCfg.FromJson).ToList()
-                : new List<RuleCfg>()
+                : new List<RuleCfg>(),
+            RemoveTrackingParamsGlobal = json.TryGetProperty("removeTrackingParamsGlobal", out var removeTracking) && removeTracking.GetBoolean(),
+            TrackingParamsToRemoveGlobal = json.TryGetProperty("trackingParamsToRemoveGlobal", out var trackingParams) && trackingParams.ValueKind == JsonValueKind.Array
+                ? trackingParams.EnumerateArray().Select(x => x.GetString() ?? "").Where(x => !string.IsNullOrEmpty(x)).ToArray()
+                : GetDefaultTrackingParams()
         };
     }
 
     public JsonObject ToJson()
     {
-        return new JsonObject
+        var obj = new JsonObject
         {
             ["version"] = Version,
             ["default"] = Default.ToJson(),
             ["rules"] = new JsonArray(Rules.Select(x => x.ToJson()).ToArray())
         };
+        if (RemoveTrackingParamsGlobal)
+            obj["removeTrackingParamsGlobal"] = RemoveTrackingParamsGlobal;
+        if (TrackingParamsToRemoveGlobal != null && TrackingParamsToRemoveGlobal.Length > 0)
+            obj["trackingParamsToRemoveGlobal"] = new JsonArray(TrackingParamsToRemoveGlobal.Select(x => JsonValue.Create(x)).ToArray());
+        return obj;
     }
 
     public static UrlRouterConfig Defaults()
@@ -140,7 +194,9 @@ public class UrlRouterConfig
                 Target = @"C:\Program Files\Mozilla Firefox\firefox.exe",
                 Args = Array.Empty<string>()
             },
-            Rules = new List<RuleCfg>()
+            Rules = new List<RuleCfg>(),
+            RemoveTrackingParamsGlobal = false,
+            TrackingParamsToRemoveGlobal = GetDefaultTrackingParams()
         };
     }
 }

@@ -78,8 +78,33 @@ public partial class MainForm : Form
         cmbDefaultBrowser.Items.Clear();
         cmbDefaultBrowser.Items.AddRange(_browsers.ToArray());
         
+        // Global tracking removal settings
+        chkRemoveTrackingGlobal.Checked = _config.RemoveTrackingParamsGlobal;
+        RefreshTrackingParamsList();
+        UpdateTrackingRemovalControls();
+        
         // Rules
         RefreshRulesList();
+    }
+
+    private void RefreshTrackingParamsList()
+    {
+        lstTrackingParams.Items.Clear();
+        foreach (var param in _config.TrackingParamsToRemoveGlobal)
+        {
+            lstTrackingParams.Items.Add(param);
+        }
+    }
+
+    private void UpdateTrackingRemovalControls()
+    {
+        var enabled = chkRemoveTrackingGlobal.Checked;
+        lblTrackingParamsList.Enabled = enabled;
+        lstTrackingParams.Enabled = enabled;
+        txtAddTrackingParam.Enabled = enabled;
+        btnAddTrackingParam.Enabled = enabled;
+        btnRemoveTrackingParam.Enabled = enabled;
+        btnResetTrackingParams.Enabled = enabled;
     }
 
     private void RefreshRulesList()
@@ -107,6 +132,12 @@ public partial class MainForm : Form
                     // Update the Browser property for future saves
                     rule.Action.Browser = browser.Name;
                 }
+            }
+            
+            // Add tracking removal indicator
+            if (rule.Action.RemoveTrackingParams)
+            {
+                browserDisplay += " 🧹";
             }
             
             item.SubItems.Add(browserDisplay);
@@ -159,6 +190,10 @@ public partial class MainForm : Form
         _config.Default.Target = txtDefaultTarget.Text.Trim();
         _config.Default.Args = txtDefaultArgs.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         
+        // Update global tracking removal settings
+        _config.RemoveTrackingParamsGlobal = chkRemoveTrackingGlobal.Checked;
+        _config.TrackingParamsToRemoveGlobal = lstTrackingParams.Items.Cast<string>().ToArray();
+        
         SaveConfig();
     }
 
@@ -171,7 +206,7 @@ public partial class MainForm : Form
     {
         try
         {
-            using var dialog = new RuleEditorDialog(_browsers);
+            using var dialog = new RuleEditorDialog(_browsers, null, _config.TrackingParamsToRemoveGlobal);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _config.Rules.Add(dialog.Rule);
@@ -191,7 +226,7 @@ public partial class MainForm : Form
         if (lstRules.SelectedItems.Count == 0) return;
         
         var rule = (RuleCfg)lstRules.SelectedItems[0].Tag;
-        using var dialog = new RuleEditorDialog(_browsers, rule);
+        using var dialog = new RuleEditorDialog(_browsers, rule, _config.TrackingParamsToRemoveGlobal);
         if (dialog.ShowDialog() == DialogResult.OK)
         {
             var index = _config.Rules.IndexOf(rule);
@@ -417,10 +452,9 @@ public partial class MainForm : Form
         var result = MessageBox.Show(
             "This will open Windows Settings where you can set URL Router as the default browser for HTTP and HTTPS links.\n\n" +
             "In the settings:\n" +
-            "1. Find 'HTTP' and click on it\n" +
-            "2. Select 'URL Router'\n" +
-            "3. Find 'HTTPS' and click on it\n" +
-            "4. Select 'URL Router'\n\n" +
+            "1. Look for 'URL Router' in the app list\n" +
+            "2. Click on 'URL Router'\n" +
+            "3. Click 'Set default' or 'Manage' to set it as default for HTTP and HTTPS links\n\n" +
             "Open Settings now?",
             "Set as Default Browser",
             MessageBoxButtons.YesNo,
@@ -430,6 +464,68 @@ public partial class MainForm : Form
         {
             DefaultBrowserHelper.OpenDefaultAppsSettings();
             // Status will be refreshed when form becomes active again
+        }
+    }
+
+    private void chkRemoveTrackingGlobal_CheckedChanged(object sender, EventArgs e)
+    {
+        UpdateTrackingRemovalControls();
+        MarkAsChanged();
+    }
+
+    private void btnAddTrackingParam_Click(object sender, EventArgs e)
+    {
+        var param = txtAddTrackingParam.Text.Trim();
+        if (string.IsNullOrWhiteSpace(param))
+        {
+            MessageBox.Show("Please enter a parameter name.", "Validation Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        // Check if already exists (case-insensitive)
+        var exists = lstTrackingParams.Items.Cast<string>()
+            .Any(p => p.Equals(param, StringComparison.OrdinalIgnoreCase));
+        
+        if (exists)
+        {
+            MessageBox.Show($"Parameter '{param}' is already in the list.", "Duplicate Parameter",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        lstTrackingParams.Items.Add(param);
+        txtAddTrackingParam.Clear();
+        MarkAsChanged();
+    }
+
+    private void btnRemoveTrackingParam_Click(object sender, EventArgs e)
+    {
+        if (lstTrackingParams.SelectedItem != null)
+        {
+            lstTrackingParams.Items.Remove(lstTrackingParams.SelectedItem);
+            MarkAsChanged();
+        }
+        else
+        {
+            MessageBox.Show("Please select a parameter to remove.", "No Selection",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    private void btnResetTrackingParams_Click(object sender, EventArgs e)
+    {
+        var result = MessageBox.Show(
+            "This will replace your current list with the default tracking parameters. Continue?",
+            "Reset to Defaults",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+        if (result == DialogResult.Yes)
+        {
+            _config.TrackingParamsToRemoveGlobal = UrlRouterConfig.GetDefaultTrackingParams();
+            RefreshTrackingParamsList();
+            MarkAsChanged();
         }
     }
 }

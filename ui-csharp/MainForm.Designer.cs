@@ -44,6 +44,14 @@ partial class MainForm
         this.lblDefaultBrowser = new Label();
         this.cmbDefaultBrowser = new ComboBox();
         this.btnSave = new Button();
+        this.grpTrackingRemoval = new GroupBox();
+        this.chkRemoveTrackingGlobal = new CheckBox();
+        this.lblTrackingParamsList = new Label();
+        this.lstTrackingParams = new ListBox();
+        this.txtAddTrackingParam = new TextBox();
+        this.btnAddTrackingParam = new Button();
+        this.btnRemoveTrackingParam = new Button();
+        this.btnResetTrackingParams = new Button();
         
         // Test tab
         this.lblTestUrl = new Label();
@@ -244,6 +252,7 @@ partial class MainForm
         this.tabDefault.Controls.Add(this.lblDefaultBrowser);
         this.tabDefault.Controls.Add(this.cmbDefaultBrowser);
         this.tabDefault.Controls.Add(this.btnSave);
+        this.tabDefault.Controls.Add(this.grpTrackingRemoval);
         this.tabDefault.Location = new Point(4, 24);
         this.tabDefault.Name = "tabDefault";
         this.tabDefault.Padding = new Padding(3);
@@ -323,6 +332,103 @@ partial class MainForm
         this.btnSave.Text = "💾 Save";
         this.btnSave.UseVisualStyleBackColor = true;
         this.btnSave.Click += new EventHandler(this.btnSave_Click);
+        
+        // 
+        // grpTrackingRemoval
+        // 
+        this.grpTrackingRemoval.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        this.grpTrackingRemoval.Controls.Add(this.chkRemoveTrackingGlobal);
+        this.grpTrackingRemoval.Controls.Add(this.lblTrackingParamsList);
+        this.grpTrackingRemoval.Controls.Add(this.lstTrackingParams);
+        this.grpTrackingRemoval.Controls.Add(this.txtAddTrackingParam);
+        this.grpTrackingRemoval.Controls.Add(this.btnAddTrackingParam);
+        this.grpTrackingRemoval.Controls.Add(this.btnRemoveTrackingParam);
+        this.grpTrackingRemoval.Controls.Add(this.btnResetTrackingParams);
+        this.grpTrackingRemoval.Location = new Point(6, 250);
+        this.grpTrackingRemoval.Name = "grpTrackingRemoval";
+        this.grpTrackingRemoval.Size = new Size(780, 320);
+        this.grpTrackingRemoval.TabIndex = 7;
+        this.grpTrackingRemoval.TabStop = false;
+        this.grpTrackingRemoval.Text = "Global Tracking Parameter Removal";
+        
+        // 
+        // chkRemoveTrackingGlobal
+        // 
+        this.chkRemoveTrackingGlobal.AutoSize = true;
+        this.chkRemoveTrackingGlobal.Location = new Point(10, 22);
+        this.chkRemoveTrackingGlobal.Name = "chkRemoveTrackingGlobal";
+        this.chkRemoveTrackingGlobal.Size = new Size(260, 19);
+        this.chkRemoveTrackingGlobal.TabIndex = 0;
+        this.chkRemoveTrackingGlobal.Text = "Remove tracking parameters from all URLs";
+        this.chkRemoveTrackingGlobal.UseVisualStyleBackColor = true;
+        this.chkRemoveTrackingGlobal.CheckedChanged += new EventHandler(this.chkRemoveTrackingGlobal_CheckedChanged);
+        
+        // 
+        // lblTrackingParamsList
+        // 
+        this.lblTrackingParamsList.AutoSize = true;
+        this.lblTrackingParamsList.Location = new Point(10, 50);
+        this.lblTrackingParamsList.Name = "lblTrackingParamsList";
+        this.lblTrackingParamsList.Size = new Size(200, 15);
+        this.lblTrackingParamsList.TabIndex = 1;
+        this.lblTrackingParamsList.Text = "Tracking parameters to remove:";
+        
+        // 
+        // lstTrackingParams
+        // 
+        this.lstTrackingParams.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        this.lstTrackingParams.FormattingEnabled = true;
+        this.lstTrackingParams.ItemHeight = 15;
+        this.lstTrackingParams.Location = new Point(10, 70);
+        this.lstTrackingParams.Name = "lstTrackingParams";
+        this.lstTrackingParams.Size = new Size(760, 169);
+        this.lstTrackingParams.TabIndex = 2;
+        
+        // 
+        // txtAddTrackingParam
+        // 
+        this.txtAddTrackingParam.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        this.txtAddTrackingParam.Location = new Point(10, 250);
+        this.txtAddTrackingParam.Name = "txtAddTrackingParam";
+        this.txtAddTrackingParam.PlaceholderText = "Enter parameter name (e.g., utm_source)";
+        this.txtAddTrackingParam.Size = new Size(500, 23);
+        this.txtAddTrackingParam.TabIndex = 3;
+        
+        // 
+        // btnAddTrackingParam
+        // 
+        this.btnAddTrackingParam.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        this.btnAddTrackingParam.Location = new Point(520, 248);
+        this.btnAddTrackingParam.Name = "btnAddTrackingParam";
+        this.btnAddTrackingParam.Size = new Size(75, 27);
+        this.btnAddTrackingParam.TabIndex = 4;
+        this.btnAddTrackingParam.Text = "Add";
+        this.btnAddTrackingParam.UseVisualStyleBackColor = true;
+        this.btnAddTrackingParam.Click += new EventHandler(this.btnAddTrackingParam_Click);
+        
+        // 
+        // btnRemoveTrackingParam
+        // 
+        this.btnRemoveTrackingParam.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        this.btnRemoveTrackingParam.Location = new Point(601, 248);
+        this.btnRemoveTrackingParam.Name = "btnRemoveTrackingParam";
+        this.btnRemoveTrackingParam.Size = new Size(75, 27);
+        this.btnRemoveTrackingParam.TabIndex = 5;
+        this.btnRemoveTrackingParam.Text = "Remove";
+        this.btnRemoveTrackingParam.UseVisualStyleBackColor = true;
+        this.btnRemoveTrackingParam.Click += new EventHandler(this.btnRemoveTrackingParam_Click);
+        
+        // 
+        // btnResetTrackingParams
+        // 
+        this.btnResetTrackingParams.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        this.btnResetTrackingParams.Location = new Point(682, 248);
+        this.btnResetTrackingParams.Name = "btnResetTrackingParams";
+        this.btnResetTrackingParams.Size = new Size(88, 27);
+        this.btnResetTrackingParams.TabIndex = 6;
+        this.btnResetTrackingParams.Text = "Reset Defaults";
+        this.btnResetTrackingParams.UseVisualStyleBackColor = true;
+        this.btnResetTrackingParams.Click += new EventHandler(this.btnResetTrackingParams_Click);
         
         // 
         // tabTest
@@ -418,6 +524,14 @@ partial class MainForm
     private Label lblDefaultBrowser;
     private ComboBox cmbDefaultBrowser;
     private Button btnSave;
+    private GroupBox grpTrackingRemoval;
+    private CheckBox chkRemoveTrackingGlobal;
+    private Label lblTrackingParamsList;
+    private ListBox lstTrackingParams;
+    private TextBox txtAddTrackingParam;
+    private Button btnAddTrackingParam;
+    private Button btnRemoveTrackingParam;
+    private Button btnResetTrackingParams;
     private Label lblTestUrl;
     private TextBox txtTestUrl;
     private Button btnTestUrl;

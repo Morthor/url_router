@@ -5,11 +5,73 @@
     "target": "C:/Program Files/Mozilla Firefox/firefox.exe",
     "args": []
   },
+  "removeTrackingParamsGlobal": false,
+  "trackingParamsToRemoveGlobal": [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "utm_id",
+    "utm_source_platform",
+    "gclid",
+    "dclid",
+    "gbraid",
+    "wbraid",
+    "_ga",
+    "_gid",
+    "_gac",
+    "_gl",
+    "fbclid",
+    "fb_action_ids",
+    "fb_action_types",
+    "fb_source",
+    "fb_ref",
+    "twclid",
+    "ref_src",
+    "ref_url",
+    "yclid",
+    "msclkid",
+    "_hsenc",
+    "_hssc",
+    "_hssrc",
+    "mc_cid",
+    "mc_eid",
+    "icid",
+    "ref",
+    "source",
+    "campaign_id",
+    "ad_id",
+    "clickid",
+    "affiliate_id"
+  ],
   "rules": [
     {
       "name": "Teams → Edge",
       "when": { "host": ["teams.microsoft.com", "*.microsoft.com"], "pathContains": [], "urlRegex": null },
       "action": { "type": "app", "target": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "args": [] }
+    },
+    {
+      "name": "YouTube → Chrome (with tracking removal)",
+      "when": { "host": ["youtube.com", "*.youtube.com"], "pathContains": [], "urlRegex": null },
+      "action": {
+        "type": "app",
+        "target": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        "args": [],
+        "removeTrackingParams": true,
+        "trackingParamsToRemove": ["utm_source", "utm_medium", "utm_campaign", "gclid"]
+      }
+    },
+    {
+      "name": "Example with custom tracking list",
+      "when": { "host": ["example.com"], "pathContains": [], "urlRegex": null },
+      "action": {
+        "type": "app",
+        "target": "C:/Program Files/Mozilla Firefox/firefox.exe",
+        "args": [],
+        "removeTrackingParams": true,
+        "trackingParamsToRemove": ["custom_param1", "custom_param2"]
+      }
     }
   ]
 }
